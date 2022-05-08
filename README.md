@@ -1,2 +1,2 @@
 # brainfuck
-Currently WIP, doesn't work yet!
+Currently WIP, loops not implemented yet!
