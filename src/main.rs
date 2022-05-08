@@ -1,7 +1,5 @@
 use std::{fs::{read_to_string}, env::{args}};
 
-
-
 #[derive(PartialEq)]
 #[derive(Debug)]
 enum Instructions {
