@@ -1,5 +1,8 @@
-use std::{fs::{self, read_to_string}, env::{self, args}};
+use std::{fs::{read_to_string}, env::{args}};
 
+
+
+#[derive(PartialEq)]
 #[derive(Debug)]
 enum Instructions {
     PointerToRight,
@@ -12,14 +15,14 @@ enum Instructions {
     LoopEnd,
 }
 
-//Brainfuck interpreter
+#[allow(arithmetic_overflow)]
 fn main() {
-    let contents = read_file();
-
     let mut memory = vec![0u8; 30000];
+    let mut pointer = 0;
+
     let mut instructions: Vec<Instructions> = vec![];
     
-    for i in contents.chars() {
+    for i in read_file().chars() {
         match i {
             '>' => instructions.push(Instructions::PointerToRight),
             '<' => instructions.push(Instructions::PointerToLeft),
@@ -33,8 +36,7 @@ fn main() {
         }
     }
 
-    let mut pointer = 0;
-    for i in instructions {
+    for i in &instructions {
         match i {
             Instructions::PointerToRight => pointer += 1,
             Instructions::PointerToLeft => pointer -= 1,
@@ -42,7 +44,12 @@ fn main() {
             Instructions::Decrement => memory[pointer] -= 1,
             Instructions::Output => print!("{}", memory[pointer] as char),
             Instructions::Input => memory[pointer] = get_input() as u8,
-            _ => {}
+            Instructions::LoopStart => {
+                
+            }
+            Instructions::LoopEnd => {
+                
+            }
         }
     }
 }
