@@ -7,8 +7,8 @@ enum Instructions {
     Decrement,
     Output,
     Input,
-    OpenBracket(usize), // index of the matching closing bracket
-    CloseBracket(usize), // index of the matching opening bracket
+    OpenBracket(usize), // Index of the matching closing bracket
+    CloseBracket(usize), // Index of the matching opening bracket
 }
 
 #[allow(arithmetic_overflow)]
@@ -19,16 +19,17 @@ fn main() {
     let char_buffer: Vec<char> = read_file().chars().collect();
     
     // Iterate over the instructions
-    let mut input_buffer = Vec::new();
-    for (i, instruction) in read_file().chars().enumerate() {
+    let mut instruction_buffer = Vec::new();
+    for (i, instruction) in char_buffer.iter().enumerate() {
         match instruction {
-            '>' => input_buffer.push(Instructions::PointerRight),
-            '<' => input_buffer.push(Instructions::PointerLeft),
-            '+' => input_buffer.push(Instructions::Increment),
-            '-' => input_buffer.push(Instructions::Decrement),
-            '.' => input_buffer.push(Instructions::Output),
-            ',' => input_buffer.push(Instructions::Input),
+            '>' => instruction_buffer.push(Instructions::PointerRight),
+            '<' => instruction_buffer.push(Instructions::PointerLeft),
+            '+' => instruction_buffer.push(Instructions::Increment),
+            '-' => instruction_buffer.push(Instructions::Decrement),
+            '.' => instruction_buffer.push(Instructions::Output),
+            ',' => instruction_buffer.push(Instructions::Input),
             '[' => {
+                // Push the index of the matching closing bracket
                 let mut index = i;
                 let mut count = 1;
                 while count != 0 {
@@ -40,9 +41,10 @@ fn main() {
                     }
                     index += 1;
                 }
-                input_buffer.push(Instructions::OpenBracket(index));
+                instruction_buffer.push(Instructions::OpenBracket(index));
             },
             ']' => {
+                // Push the index of the matching opening bracket
                 let mut index = i;
                 let mut count = 1;
                 while count != 0 {
@@ -54,7 +56,7 @@ fn main() {
                     }
                     index -= 1;
                 }
-                input_buffer.push(Instructions::CloseBracket(index));
+                instruction_buffer.push(Instructions::CloseBracket(index));
             }
             _ => {}
         }
@@ -62,9 +64,9 @@ fn main() {
 
     let mut instruction_pointer = 0;
 
-    // Execute the instructions from input_buffer
-    while instruction_pointer < input_buffer.len() {
-        match input_buffer[instruction_pointer] {
+    // Execute the instructions from the instruction buffer
+    while instruction_pointer < instruction_buffer.len() {
+        match instruction_buffer[instruction_pointer] {
             Instructions::PointerRight => if pointer > 29999 {
                 pointer = 0;
             } else {
@@ -94,15 +96,16 @@ fn main() {
         }
         instruction_pointer += 1;
     }
-
 }
 
+// Read file from the command line arguments
 fn read_file() -> String {
     let path = args().nth(1).expect("No file path provided");
     let contents = read_to_string(path).expect("Unable to read file");
     contents
 }
 
+// Get input from stdin (trough the terminal)
 fn get_input() -> char {
     let mut input = String::new();
     std::io::stdin().read_line(&mut input).expect("Failed to read input");
