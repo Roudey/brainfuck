@@ -1,7 +1,7 @@
 # brainfuck
-Currently WIP, loops not implemented yet!
+Simple brainfuck interpreter written in Rust.
 
-How to run examples:
-cargo run examples/[INSERT EXAMPLE]
+**How to run examples:** <br/>
+`cargo run examples/[INSERT EXAMPLE]`	
 
-Only examples working right now is "hey.bf" and "input_test.bf"
+Examples can be found in the [examples](https://github.com/Roudey/brainfuck/tree/master/examples) map.
