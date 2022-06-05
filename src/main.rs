@@ -41,6 +41,9 @@ fn main() {
                     }
                     index += 1;
                 }
+                if count != 0 {
+                    panic!("Unmatched opening bracket");
+                }
                 instruction_buffer.push(Instructions::OpenBracket(index));
             },
             ']' => {
@@ -55,6 +58,9 @@ fn main() {
                         _ => {}
                     }
                     index -= 1;
+                }
+                if count != 0 {
+                    panic!("Unmatched closing bracket");
                 }
                 instruction_buffer.push(Instructions::CloseBracket(index));
             }
