@@ -1,4 +1,4 @@
-use std::{fs::{read_to_string}, env::{args}};
+use std::{fs::{read_to_string}, env::{args}, io::Write};
 
 enum Instructions {
     PointerLeft,
@@ -85,7 +85,10 @@ fn main() {
             },
             Instructions::Increment => memory[pointer] += 1,
             Instructions::Decrement => memory[pointer] -= 1,
-            Instructions::Output => print!("{}", memory[pointer] as char),
+            Instructions::Output => {
+                print!("{}", memory[pointer] as char); 
+                std::io::stdout().flush().unwrap();
+            },
             Instructions::Input => {
                 memory[pointer] = get_input() as u8;
             }
