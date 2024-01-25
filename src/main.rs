@@ -1,4 +1,4 @@
-use std::{fs::{read_to_string}, env::{args}, io::Write};
+use std::{fs::read_to_string, env::args, io::{stdout, Write}};
 
 enum Instructions {
     PointerLeft,
@@ -9,6 +9,7 @@ enum Instructions {
     Input,
     OpenBracket(usize), // Index of the matching closing bracket
     CloseBracket(usize), // Index of the matching opening bracket
+    Comment,
 }
 
 #[allow(arithmetic_overflow)]
@@ -64,7 +65,7 @@ fn main() {
                 }
                 instruction_buffer.push(Instructions::CloseBracket(index));
             }
-            _ => {}
+            _ => instruction_buffer.push(Instructions::Comment)
         }
     }
 
@@ -73,7 +74,7 @@ fn main() {
     // Execute the instructions from the instruction buffer
     while instruction_pointer < instruction_buffer.len() {
         match instruction_buffer[instruction_pointer] {
-            Instructions::PointerRight => if pointer > 29999 {
+            Instructions::PointerRight => if pointer >= 29999 {
                 pointer = 0;
             } else {
                 pointer += 1;
@@ -87,7 +88,7 @@ fn main() {
             Instructions::Decrement => memory[pointer] -= 1,
             Instructions::Output => {
                 print!("{}", memory[pointer] as char); 
-                std::io::stdout().flush().unwrap();
+                stdout().flush().unwrap();
             },
             Instructions::Input => {
                 memory[pointer] = get_input() as u8;
@@ -102,6 +103,7 @@ fn main() {
                     instruction_pointer = index;
                 }
             }
+            Instructions::Comment => {}
         }
         instruction_pointer += 1;
     }
