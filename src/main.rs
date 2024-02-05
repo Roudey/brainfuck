@@ -116,7 +116,7 @@ fn read_file() -> String {
     contents
 }
 
-// Get input from stdin (trough the terminal)
+// Get input from stdin
 fn get_input() -> char {
     let mut input = String::new();
     std::io::stdin().read_line(&mut input).expect("Failed to read input");
